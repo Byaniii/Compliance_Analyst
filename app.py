@@ -33,12 +33,8 @@ except ImportError:
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 CORS(app)
 
-# Initialize database (skip if serverless)
-if os.environ.get('DISABLE_DATABASE') != '1':
-    db = AssessmentDB()
-else:
-    db = None
-    print("⚠ Database disabled for serverless deployment")
+# Initialize database
+db = AssessmentDB()
 
 # Initialize rules manager
 rules_manager = RulesManager()
@@ -161,10 +157,9 @@ def risk_check():
         # Perform compliance review
         result = engine.review(transaction)
 
-        # Save assessment to database (if available)
-        if db:
-            assessment_id = db.save_assessment(data, result)
-            result['assessment_id'] = assessment_id
+        # Save assessment to database
+        assessment_id = db.save_assessment(data, result)
+        result['assessment_id'] = assessment_id
 
         return jsonify(result), 200
 
@@ -187,9 +182,6 @@ def get_assessments():
     - limit: Number of records to return (default: 100)
     - offset: Number of records to skip (default: 0)
     """
-    if not db:
-        return jsonify({"assessments": [], "count": 0, "note": "History disabled in serverless mode"}), 200
-    
     try:
         limit = int(request.args.get('limit', 100))
         offset = int(request.args.get('offset', 0))
@@ -206,9 +198,6 @@ def get_assessments():
 @app.route("/api/assessments/<int:assessment_id>", methods=["GET"])
 def get_assessment(assessment_id):
     """Get a specific assessment by ID"""
-    if not db:
-        return jsonify({"error": "History disabled in serverless mode"}), 503
-    
     try:
         assessment = db.get_assessment_by_id(assessment_id)
         if not assessment:
@@ -221,9 +210,6 @@ def get_assessment(assessment_id):
 @app.route("/api/statistics", methods=["GET"])
 def get_statistics():
     """Get summary statistics of all assessments"""
-    if not db:
-        return jsonify({"total_assessments": 0, "note": "History disabled in serverless mode"}), 200
-    
     try:
         stats = db.get_statistics()
         return jsonify(stats), 200
@@ -521,10 +507,9 @@ def risk_check_with_documents():
                         elif adjustment < 0:
                             result['rationale'] += f" Documents verified successfully, risk reduced by {abs(adjustment)} points."
 
-        # Save assessment to database (if available)
-        if db:
-            assessment_id = db.save_assessment(transaction_data, result)
-            result['assessment_id'] = assessment_id
+        # Save assessment to database
+        assessment_id = db.save_assessment(transaction_data, result)
+        result['assessment_id'] = assessment_id
 
         return jsonify(result), 200
 
@@ -926,7 +911,5 @@ Return a JSON object with all relevant fields you can extract."""
 
 
 if __name__ == "__main__":
-    # Run with debug=True for development, use PORT from environment for deployment
-    import os
-    port = int(os.environ.get('PORT', 8000))
-    app.run(debug=False, host="0.0.0.0", port=port)
+    # Run with debug=True for development
+    app.run(debug=True, host="0.0.0.0", port=8000)

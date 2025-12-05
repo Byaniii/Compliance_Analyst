@@ -42,12 +42,3 @@ Thumbs.db
 .coverage
 htmlcov/
 
-# Database
-*.db
-compliance_assessments.db
-
-.env
-*.db
-__pycache__/
-*.egg-info/
-.DS_Store

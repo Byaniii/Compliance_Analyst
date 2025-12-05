@@ -147,3 +147,4 @@ class RulesManager:
             return self.save_rules(self.rules)
         return False
 
+
