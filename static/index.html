@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AML/KYC Compliance Review</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🛡️ AML/KYC Compliance Review System</h1>
+            <p>Assess transaction risk in real-time</p>
+            <div style="margin-top: 15px;">
+                <a href="/history" style="color: #667eea; text-decoration: none; font-weight: 600; margin-right: 20px;">
+                    📊 View Assessment History
+                </a>
+                <a href="/configure" style="color: #667eea; text-decoration: none; font-weight: 600; margin-right: 20px;">
+                    ⚙️ Configure Rules
+                </a>
+                <a href="/api/download-mock-documents" style="background: #10b981; color: white; text-decoration: none; font-weight: 600; padding: 8px 16px; border-radius: 6px; display: inline-block;">
+                    📥 Download Test Documents
+                </a>
+            </div>
+            <div style="margin-top: 12px; padding: 12px; background: #fef3c7; border-radius: 6px; font-size: 0.9rem; color: #92400e;">
+                💡 <strong>For Judges:</strong> Download test documents to try all 3 risk scenarios (Low/Medium/High)
+            </div>
+        </header>
+
+        <main class="content">
+            <!-- Document Upload Section -->
+            <section class="form-section">
+                <h2>📄 Required Compliance Documents</h2>
+                <p style="color: #666; margin-bottom: 25px;">Upload the required documents for KYC/AML verification. All documents are securely analyzed by AI.</p>
+                
+                <div class="document-upload-grid">
+                    <!-- Source of Funds Statement -->
+                    <div class="document-upload-item">
+                        <div class="document-header">
+                            <span class="document-icon">💰</span>
+                            <div>
+                                <h3>Source of Funds Statement</h3>
+                                <p class="document-description">Bank statement, transaction history, or explanation of funds origin</p>
+                            </div>
+                        </div>
+                        <input type="file" id="sourceOfFunds" accept="image/*,application/pdf,.pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display: none;">
+                        <div class="upload-compact" data-input="sourceOfFunds">
+                            <span class="upload-compact-text">📎 Click to upload</span>
+                        </div>
+                        <div class="file-preview" id="preview-sourceOfFunds" style="display: none;">
+                            <span class="file-name"></span>
+                            <button type="button" class="btn-remove" data-doc="sourceOfFunds">✕</button>
+                        </div>
+                    </div>
+
+                    <!-- Proof of Identity -->
+                    <div class="document-upload-item">
+                        <div class="document-header">
+                            <span class="document-icon">🪪</span>
+                            <div>
+                                <h3>Proof of Identity (KYC)</h3>
+                                <p class="document-description">Government-issued ID, passport, or driver's license</p>
+                            </div>
+                        </div>
+                        <input type="file" id="proofOfIdentity" accept="image/*,application/pdf,.pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display: none;">
+                        <div class="upload-compact" data-input="proofOfIdentity">
+                            <span class="upload-compact-text">📎 Click to upload</span>
+                        </div>
+                        <div class="file-preview" id="preview-proofOfIdentity" style="display: none;">
+                            <span class="file-name"></span>
+                            <button type="button" class="btn-remove" data-doc="proofOfIdentity">✕</button>
+                        </div>
+                    </div>
+
+                    <!-- Proof of Residency -->
+                    <div class="document-upload-item">
+                        <div class="document-header">
+                            <span class="document-icon">🏠</span>
+                            <div>
+                                <h3>Proof of Residency</h3>
+                                <p class="document-description">Utility bill, lease agreement, or bank statement showing address</p>
+                            </div>
+                        </div>
+                        <input type="file" id="proofOfResidency" accept="image/*,application/pdf,.pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display: none;">
+                        <div class="upload-compact" data-input="proofOfResidency">
+                            <span class="upload-compact-text">📎 Click to upload</span>
+                        </div>
+                        <div class="file-preview" id="preview-proofOfResidency" style="display: none;">
+                            <span class="file-name"></span>
+                            <button type="button" class="btn-remove" data-doc="proofOfResidency">✕</button>
+                        </div>
+                    </div>
+
+                    <!-- Business Registration -->
+                    <div class="document-upload-item">
+                        <div class="document-header">
+                            <span class="document-icon">🏢</span>
+                            <div>
+                                <h3>Business Registration / Articles <span style="color: #999; font-size: 0.85rem; font-weight: normal;">(Optional for Freelancers)</span></h3>
+                                <p class="document-description">Certificate of incorporation, business license, or registration documents</p>
+                            </div>
+                        </div>
+                        <input type="file" id="businessRegistration" accept="image/*,application/pdf,.pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display: none;">
+                        <div class="upload-compact" data-input="businessRegistration">
+                            <span class="upload-compact-text">📎 Click to upload</span>
+                        </div>
+                        <div class="file-preview" id="preview-businessRegistration" style="display: none;">
+                            <span class="file-name"></span>
+                            <button type="button" class="btn-remove" data-doc="businessRegistration">✕</button>
+                        </div>
+                    </div>
+
+                    <!-- Contracts/Invoices -->
+                    <div class="document-upload-item">
+                        <div class="document-header">
+                            <span class="document-icon">📋</span>
+                            <div>
+                                <h3>Contracts / Invoices / Payroll List</h3>
+                                <p class="document-description">Supporting documents for transaction purpose verification</p>
+                            </div>
+                        </div>
+                        <input type="file" id="contractsInvoices" accept="image/*,application/pdf,.pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display: none;">
+                        <div class="upload-compact" data-input="contractsInvoices">
+                            <span class="upload-compact-text">📎 Click to upload</span>
+                        </div>
+                        <div class="file-preview" id="preview-contractsInvoices" style="display: none;">
+                            <span class="file-name"></span>
+                            <button type="button" class="btn-remove" data-doc="contractsInvoices">✕</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 25px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <p style="margin: 0; color: #666;">
+                        <strong>📌 Note:</strong> Upload supporting documents for enhanced compliance verification. 
+                        Documents will be analyzed together with your transaction details during risk assessment.
+                    </p>
+                    <p style="margin: 10px 0 0 0; color: #666; font-size: 0.9rem;">
+                        <strong>Supported formats:</strong> JPG, PNG, PDF, DOC, DOCX (Max 10MB per file)
+                    </p>
+                    <p style="margin: 10px 0 0 0; color: #667eea; font-size: 0.9rem; font-weight: 600;">
+                        ✓ Documents uploaded: <span id="documentCount">0</span> | These will be included in your risk assessment
+                    </p>
+                    <p style="margin: 10px 0 0 0; color: #999; font-size: 0.85rem;">
+                        💡 Business Registration is optional for Freelancers, required for SMB/Corporate/NGO
+                    </p>
+                </div>
+            </section>
+
+            <!-- Transaction Form -->
+            <section class="form-section" style="margin-top: 30px;">
+                <h2>📝 Transaction Details</h2>
+                <form id="transactionForm" class="transaction-form">
+                    <div class="form-group">
+                        <label for="amount">Amount *</label>
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            placeholder="Enter amount"
+                            required
+                            min="0"
+                            step="0.01"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currency">Currency</label>
+                        <select id="currency" name="currency">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="CHF">CHF</option>
+                            <option value="CNY">CNY</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sourceCountry">Source Country *</label>
+                        <select id="sourceCountry" name="source_country" required>
+                            <option value="">-- Select Source Country --</option>
+                            
+                            <optgroup label="Southeast Asia (Ripe Markets)">
+                                <option value="Singapore">🇸🇬 Singapore</option>
+                                <option value="Philippines">🇵🇭 Philippines</option>
+                                <option value="Vietnam">🇻🇳 Vietnam</option>
+                                <option value="Indonesia">🇮🇩 Indonesia</option>
+                                <option value="Thailand">🇹🇭 Thailand</option>
+                                <option value="Malaysia">🇲🇾 Malaysia</option>
+                                <option value="Myanmar">🇲🇲 Myanmar</option>
+                                <option value="Cambodia">🇰🇭 Cambodia</option>
+                            </optgroup>
+                            
+                            <optgroup label="Asia Pacific">
+                                <option value="Hong Kong">🇭🇰 Hong Kong</option>
+                                <option value="China">🇨🇳 China</option>
+                                <option value="Japan">🇯🇵 Japan</option>
+                                <option value="South Korea">🇰🇷 South Korea</option>
+                                <option value="Taiwan">🇹🇼 Taiwan</option>
+                                <option value="India">🇮🇳 India</option>
+                                <option value="Pakistan">🇵🇰 Pakistan</option>
+                                <option value="Bangladesh">🇧🇩 Bangladesh</option>
+                                <option value="Australia">🇦🇺 Australia</option>
+                                <option value="New Zealand">🇳🇿 New Zealand</option>
+                            </optgroup>
+                            
+                            <optgroup label="North America">
+                                <option value="United States">🇺🇸 United States</option>
+                                <option value="Canada">🇨🇦 Canada</option>
+                                <option value="Mexico">🇲🇽 Mexico</option>
+                            </optgroup>
+                            
+                            <optgroup label="Europe">
+                                <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                                <option value="Germany">🇩🇪 Germany</option>
+                                <option value="France">🇫🇷 France</option>
+                                <option value="Switzerland">🇨🇭 Switzerland</option>
+                                <option value="Netherlands">🇳🇱 Netherlands</option>
+                                <option value="Italy">🇮🇹 Italy</option>
+                                <option value="Spain">🇪🇸 Spain</option>
+                                <option value="Poland">🇵🇱 Poland</option>
+                                <option value="Russia">🇷🇺 Russia</option>
+                            </optgroup>
+                            
+                            <optgroup label="Middle East">
+                                <option value="United Arab Emirates">🇦🇪 UAE</option>
+                                <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
+                                <option value="Qatar">🇶🇦 Qatar</option>
+                                <option value="Israel">🇮🇱 Israel</option>
+                                <option value="Turkey">🇹🇷 Turkey</option>
+                                <option value="Iran">🇮🇷 Iran (High Risk)</option>
+                            </optgroup>
+                            
+                            <optgroup label="Africa">
+                                <option value="South Africa">🇿🇦 South Africa</option>
+                                <option value="Nigeria">🇳🇬 Nigeria (High Risk)</option>
+                                <option value="Kenya">🇰🇪 Kenya</option>
+                                <option value="Egypt">🇪🇬 Egypt</option>
+                            </optgroup>
+                            
+                            <optgroup label="Latin America">
+                                <option value="Brazil">🇧🇷 Brazil</option>
+                                <option value="Argentina">🇦🇷 Argentina</option>
+                                <option value="Colombia">🇨🇴 Colombia</option>
+                                <option value="Chile">🇨🇱 Chile</option>
+                            </optgroup>
+                            
+                            <optgroup label="Offshore/High Risk Jurisdictions">
+                                <option value="Cayman Islands">🇰🇾 Cayman Islands</option>
+                                <option value="British Virgin Islands">🇻🇬 British Virgin Islands</option>
+                                <option value="Panama">🇵🇦 Panama</option>
+                                <option value="Bahamas">🇧🇸 Bahamas</option>
+                                <option value="Seychelles">🇸🇨 Seychelles</option>
+                                <option value="North Korea">🇰🇵 North Korea (High Risk)</option>
+                                <option value="Syria">🇸🇾 Syria (High Risk)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destinationCountry">Destination Country *</label>
+                        <select id="destinationCountry" name="destination_country" required>
+                            <option value="">-- Select Destination Country --</option>
+                            
+                            <optgroup label="Southeast Asia (Ripe Markets)">
+                                <option value="Singapore">🇸🇬 Singapore</option>
+                                <option value="Philippines">🇵🇭 Philippines</option>
+                                <option value="Vietnam">🇻🇳 Vietnam</option>
+                                <option value="Indonesia">🇮🇩 Indonesia</option>
+                                <option value="Thailand">🇹🇭 Thailand</option>
+                                <option value="Malaysia">🇲🇾 Malaysia</option>
+                                <option value="Myanmar">🇲🇲 Myanmar</option>
+                                <option value="Cambodia">🇰🇭 Cambodia</option>
+                            </optgroup>
+                            
+                            <optgroup label="Asia Pacific">
+                                <option value="Hong Kong">🇭🇰 Hong Kong</option>
+                                <option value="China">🇨🇳 China</option>
+                                <option value="Japan">🇯🇵 Japan</option>
+                                <option value="South Korea">🇰🇷 South Korea</option>
+                                <option value="Taiwan">🇹🇼 Taiwan</option>
+                                <option value="India">🇮🇳 India</option>
+                                <option value="Pakistan">🇵🇰 Pakistan</option>
+                                <option value="Bangladesh">🇧🇩 Bangladesh</option>
+                                <option value="Australia">🇦🇺 Australia</option>
+                                <option value="New Zealand">🇳🇿 New Zealand</option>
+                            </optgroup>
+                            
+                            <optgroup label="North America">
+                                <option value="United States">🇺🇸 United States</option>
+                                <option value="Canada">🇨🇦 Canada</option>
+                                <option value="Mexico">🇲🇽 Mexico</option>
+                            </optgroup>
+                            
+                            <optgroup label="Europe">
+                                <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                                <option value="Germany">🇩🇪 Germany</option>
+                                <option value="France">🇫🇷 France</option>
+                                <option value="Switzerland">🇨🇭 Switzerland</option>
+                                <option value="Netherlands">🇳🇱 Netherlands</option>
+                                <option value="Italy">🇮🇹 Italy</option>
+                                <option value="Spain">🇪🇸 Spain</option>
+                                <option value="Poland">🇵🇱 Poland</option>
+                                <option value="Russia">🇷🇺 Russia</option>
+                            </optgroup>
+                            
+                            <optgroup label="Middle East">
+                                <option value="United Arab Emirates">🇦🇪 UAE</option>
+                                <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
+                                <option value="Qatar">🇶🇦 Qatar</option>
+                                <option value="Israel">🇮🇱 Israel</option>
+                                <option value="Turkey">🇹🇷 Turkey</option>
+                                <option value="Iran">🇮🇷 Iran (High Risk)</option>
+                            </optgroup>
+                            
+                            <optgroup label="Africa">
+                                <option value="South Africa">🇿🇦 South Africa</option>
+                                <option value="Nigeria">🇳🇬 Nigeria (High Risk)</option>
+                                <option value="Kenya">🇰🇪 Kenya</option>
+                                <option value="Egypt">🇪🇬 Egypt</option>
+                            </optgroup>
+                            
+                            <optgroup label="Latin America">
+                                <option value="Brazil">🇧🇷 Brazil</option>
+                                <option value="Argentina">🇦🇷 Argentina</option>
+                                <option value="Colombia">🇨🇴 Colombia</option>
+                                <option value="Chile">🇨🇱 Chile</option>
+                            </optgroup>
+                            
+                            <optgroup label="Offshore/High Risk Jurisdictions">
+                                <option value="Cayman Islands">🇰🇾 Cayman Islands</option>
+                                <option value="British Virgin Islands">🇻🇬 British Virgin Islands</option>
+                                <option value="Panama">🇵🇦 Panama</option>
+                                <option value="Bahamas">🇧🇸 Bahamas</option>
+                                <option value="Seychelles">🇸🇨 Seychelles</option>
+                                <option value="North Korea">🇰🇵 North Korea (High Risk)</option>
+                                <option value="Syria">🇸🇾 Syria (High Risk)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="purpose">Transaction Purpose *</label>
+                        <select id="purpose" name="purpose" required>
+                            <option value="">-- Select Purpose --</option>
+                            
+                            <optgroup label="Low Risk Purposes">
+                                <option value="payroll">Payroll</option>
+                                <option value="services">Services / Professional Fees</option>
+                                <option value="salary">Salary Payment</option>
+                                <option value="contractor payment">Contractor Payment</option>
+                            </optgroup>
+                            
+                            <optgroup label="Medium Risk Purposes">
+                                <option value="remittance">Remittance / Money Transfer</option>
+                                <option value="trade finance">Trade Finance</option>
+                                <option value="invoice payment">Invoice Payment</option>
+                                <option value="supplier payment">Supplier Payment</option>
+                                <option value="business expenses">Business Expenses</option>
+                                <option value="loan repayment">Loan Repayment</option>
+                            </optgroup>
+                            
+                            <optgroup label="High Risk Purposes">
+                                <option value="investment">Investment</option>
+                                <option value="gambling">Gambling</option>
+                                <option value="crypto trading">Crypto Trading</option>
+                                <option value="real estate">Real Estate Purchase</option>
+                                <option value="asset purchase">Asset Purchase</option>
+                            </optgroup>
+                            
+                            <option value="other">Other (Specify below)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="customPurposeGroup" style="display: none;">
+                        <label for="customPurpose">Specify Purpose *</label>
+                        <input
+                            type="text"
+                            id="customPurpose"
+                            placeholder="Enter custom transaction purpose"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="counterpartyType">Counterparty Type *</label>
+                        <select id="counterpartyType" name="counterparty_type" required>
+                            <option value="">-- Select --</option>
+                            <option value="freelancer">Freelancer</option>
+                            <option value="smb">SMB (Small/Medium Business)</option>
+                            <option value="corporate">Corporate</option>
+                            <option value="ngo">NGO / Non-Profit</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="historySignals">Structuring Signals (Optional)</label>
+                        <textarea
+                            id="historySignals"
+                            name="history_signals"
+                            placeholder="Describe any structuring signals (multiple small transactions, etc.)"
+                            rows="3"
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Assess Compliance Risk</button>
+                </form>
+            </section>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing transaction...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+            <!-- Compliance Review Card -->
+            <section id="reviewCard" class="review-card" style="display: none;">
+                <div class="card-header">
+                    <h2>Compliance Review Results</h2>
+                </div>
+
+                <div class="card-content">
+                    <!-- Risk Score Display -->
+                    <div class="risk-score-section">
+                        <div id="riskScoreCircle" class="risk-score-circle">
+                            <div class="score-value"><span id="riskScoreValue">0</span>/100</div>
+                            <div id="riskLevelText" class="risk-level-text">Low</div>
+                        </div>
+                    </div>
+
+                    <!-- Document Score Adjustment (if applicable) -->
+                    <div id="scoreAdjustmentSection" class="section" style="display: none;">
+                        <h3>📊 Document Verification Impact</h3>
+                        <div id="scoreAdjustmentDisplay"></div>
+                    </div>
+
+                    <!-- Triggered Rules -->
+                    <div class="section">
+                        <h3>📋 Triggered Rules</h3>
+                        <ul id="triggeredRulesList" class="rules-list"></ul>
+                    </div>
+
+                    <!-- Rationale -->
+                    <div class="section">
+                        <h3>💡 Assessment Rationale</h3>
+                        <p id="rationaleText" class="rationale-text"></p>
+                    </div>
+
+                    <!-- Compliance Checklist -->
+                    <div class="section">
+                        <h3>✓ Compliance Checklist</h3>
+                        <ul id="checklistItems" class="checklist"></ul>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="button" class="reset-btn" onclick="resetForm()">
+                        ← Assess Another Transaction
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>⚠️ <strong>Disclaimer:</strong> This is a mock compliance system for demonstration purposes. 
+               All risk assessments should be reviewed by qualified compliance officers.</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

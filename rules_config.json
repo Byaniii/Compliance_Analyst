@@ -1,0 +1,57 @@
+{
+  "high_risk_countries": [
+    "Cayman Islands",
+    "Nigeria",
+    "Syria",
+    "Iran",
+    "North Korea"
+  ],
+  "medium_risk_countries": [
+    "Vietnam",
+    "Indonesia",
+    "India"
+  ],
+  "low_risk_countries": [
+    "Singapore",
+    "United Kingdom",
+    "Philippines",
+    "United States"
+  ],
+  "high_risk_purposes": [
+    "investment",
+    "gambling",
+    "crypto trading"
+  ],
+  "medium_risk_purposes": [
+    "trade finance",
+    "remittance"
+  ],
+  "low_risk_purposes": [
+    "payroll",
+    "services"
+  ],
+  "country_risk_scores": {
+    "high": 35,
+    "medium": 18,
+    "low": 5
+  },
+  "purpose_risk_scores": {
+    "high": 28,
+    "medium": 15,
+    "low": 3
+  },
+  "customer_type_scores": {
+    "high": 40,
+    "medium": 15,
+    "low": 5
+  },
+  "amount_thresholds": {
+    "high_risk_origin_threshold": 10000,
+    "general_high_threshold": 25000,
+    "moderate_threshold": 15000
+  },
+  "risk_score_thresholds": {
+    "low_max": 30,
+    "medium_max": 70
+  }
+}
