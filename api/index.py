@@ -1,6 +1,5 @@
 """
 Vercel serverless function entry point
-Wraps the Flask app for Vercel deployment
 """
 
 import sys
@@ -11,12 +10,13 @@ from pathlib import Path
 parent_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(parent_dir))
 
-# Disable database for serverless (use in-memory or disable)
+# Disable database for serverless
 os.environ['DISABLE_DATABASE'] = '1'
 
+# Import the Flask app
 from app import app
 
-# Vercel WSGI handler
-def handler(event, context):
-    return app(event, context)
+# This is the WSGI application Vercel will use
+# No need for a handler function - just export app directly
+app = app
 
