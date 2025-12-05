@@ -911,5 +911,7 @@ Return a JSON object with all relevant fields you can extract."""
 
 
 if __name__ == "__main__":
-    # Run with debug=True for development
-    app.run(debug=True, host="0.0.0.0", port=8000)
+    # Run with debug=True for development, use PORT from environment for deployment
+    import os
+    port = int(os.environ.get('PORT', 8000))
+    app.run(debug=False, host="0.0.0.0", port=port)
